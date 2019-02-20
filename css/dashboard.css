@@ -1,0 +1,28 @@
+/*
+ * Global add-ons
+ */
+
+.sub-header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+
+.container {
+    position: relative;
+}
+
+.box {
+    position: absolute;
+    top: 125px;
+    left: 150px;
+    width: 300px;
+    height: 100px;
+}
+
+.sliderboxdrop {
+    position: absolute;
+    top: -10px;
+    left: -110px;
+}
+

@@ -11,7 +11,7 @@ new Vue({
   },
   methods: { 
     initMap() {
-      var map = L.map('#map', {
+      var map = L.map("map", {
         crs: L.CRS.Simple,
         maxBounds: [[-1500, 1500], [-1500, 1500]],
       });

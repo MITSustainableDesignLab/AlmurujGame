@@ -1,10 +1,18 @@
 
 /* Start Toggle Switch CSS*/
+
+#neighborhoodmap {
+  min-width: 380px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
 .switch {
   position: relative;
   display: inline-block;
   width: 60px;
   height: 34px;
+
 }
 
 .switch input { 

@@ -29,7 +29,11 @@ all = commercial["features"].concat(residential["features"]);
 for (var i in all) {
   var building = all[i];
   var b = new L.GeoJSON(building, {
-    onEachFeature: onEachFeature
+    onEachFeature: onEachFeature,
+    style: {
+      color: '#228B22',
+      opacity: 0.7
+    } 
   }).addTo(map);
   b.addTo(map);
 }

@@ -21,18 +21,76 @@
 
         <!-- toggle bar is displayed here-->
         <div class="col-md-3">  
-          <div id="toggle">
-
+          <h1> Customize Building </h1>
+          <div id="toggle" class="controlpanel">   
+            <div class="controlrow">
+              <input type="checkbox" id="toggleHP"> 
+              <label for="toggleHP">HP</label>
+            </div> 
+            <div class="controlrow">
+              <input type="checkbox" id="toggleWater"> 
+              <label for="toggleWater">Water</label>
+            </div>
+            <div class="controlrow">
+              <input type="checkbox" id="toggleGreenery"> 
+              <label for="toggleGreenery">Greenery</label>
+            </div>
+            <div class="controlrow">
+              <input type="range" min="0" max="100" value="50" class="slider"
+              id="toggleFood" name="toggleFood">
+              <label for="toggleFood" ><p text-align=center>Food %</p></label>
+            </div>
+            <div class="controlrow">
+              <input type="range" min="0" max="100" value="50" class="slider"
+              id="togglePV" name="togglePV">
+              <label for="togglePV">PV %</label>
+            </div>
           </div>
         </div>
       </div>
 
       <div class="row">
 
-        <div id="calculations">
-        </div>
+        <div class="results" id="calculations">
+          <!-- CO2 results -->
+          <div class="col-md-2" id="CO2">  
+             <div id="CO2val"> </div>
+             units
+             CO2
+          </div>
 
-      </div>
+          <!-- Cost results -->
+          <div class="col-md-2" id="Water">  
+             <div id="Waterval"> </div>
+             units
+             Water
+          </div>
+
+          <div class="col-md-2" id="jobs">  
+             <div id="jobsval"> </div>
+             units
+             Jobs
+          </div>
+
+          <div class="col-md-2" id="Energy">  
+             <div id="Energyval"> </div>
+             units
+             Energy
+          </div>
+          
+          <div class="col-md-2" id="Cost">  
+             <div id="Costval"> </div>
+             units
+             Cost
+          </div>
+          
+          <div class="col-md-2" id="other">  
+             <div id="otherval"> </div>
+             units
+             other
+          </div>
+        </div> <!-- end results container-->
+      </div> <!-- end results row -->
 
     </div>
 

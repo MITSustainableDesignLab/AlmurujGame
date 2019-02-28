@@ -8,9 +8,11 @@ var map = L.map('map', {
 
 bounds = [[-2000, -2000], [2000, 2000]];
 map.fitBounds(bounds);
-function whenClicked(e) {
+
+function onClick(e) {
   // e = event
-  console.log(e);
+  var id = e.target.feature.id
+  console.log(id);
   // You can make your ajax call declaration here
   //$.ajax(... 
 }
@@ -18,12 +20,16 @@ function whenClicked(e) {
 function onEachFeature(feature, layer) {
     //bind click
     layer.on({
-        click: whenClicked
+        click: onClick
     });
 }
-new L.GeoJSON(residential, {
-  onEachFeature: onEachFeature
-}).addTo(map);
-new L.GeoJSON(commercial, {
-  onEachFeature: onEachFeature
-}).addTo(map);
+
+all = commercial["features"].concat(residential["features"]);
+
+for (var i in all) {
+  var building = all[i];
+  var b = new L.GeoJSON(building, {
+    onEachFeature: onEachFeature
+  }).addTo(map);
+  b.addTo(map);
+}

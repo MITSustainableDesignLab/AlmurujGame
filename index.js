@@ -2,10 +2,12 @@
 var map = L.map('map', {
   //center: [0, 0],
   crs: L.CRS.Simple,
-  //maxBounds: [[-1000, -1000], [1000, 1000]],
-  minZoom: -2,
-}).setView([0,0]);
+  //maxBounds: [[-2000, -2000], [2000, 2000]],
+  minZoom: -2 //zoom: -1,
+}).setView([0,0], -2);
 
+bounds = [[-2000, -2000], [2000, 2000]];
+map.fitBounds(bounds);
 function whenClicked(e) {
   // e = event
   console.log(e);
@@ -21,7 +23,7 @@ function onEachFeature(feature, layer) {
 }
 new L.GeoJSON(residential, {
   onEachFeature: onEachFeature
-})
+}).addTo(map);
 new L.GeoJSON(commercial, {
   onEachFeature: onEachFeature
 }).addTo(map);

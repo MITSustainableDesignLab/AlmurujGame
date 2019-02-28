@@ -1,32 +1,6 @@
-new Vue({
-  el: '#app',
-  data: {
-    map: null,
-    tileLayer: null,
-    layers: [],  
-    buildings: buildings,
-  },
-  mounted() {
-    this.initMap();
-  },
-  methods: { 
-    initMap() {
-      var map = L.map("map", {
-        crs: L.CRS.Simple,
-        maxBounds: [[-1500, 1500], [-1500, 1500]],
-      });
-      L.geoJSON(buildings, {
-        filter: function(building) {
-          return building.geometry;
-        }
-      }).addTo(map); 
-      this.map=map
-    },
-  },
-});
-
 var buildings = [
-    {
+  // this is a geojson feature
+  {
       "id": "d0ac7e70-e1a1-4c3f-8483-34f0c0e65a61",
       "geometry": {
         "type": "MultiPolygon",
@@ -273,5 +247,198 @@ var buildings = [
       "type": "Feature"
     },
 ]
+
+var mp = {
+  "type": "Feature",
+  "geometry": {
+    "type": "MultiPolygon",
+    "coordinates": [
+        [
+          [
+            [101.2, 1.2], [101.8, 1.2], [101.8, 1.8], [101.2, 1.8], [101.2, 1.2]
+          ],
+          [
+            [101.2, 1.2], [101.3, 1.2], [101.3, 1.3], [101.2, 1.3], [101.2, 1.2]
+          ],
+          [
+            [101.6, 1.4], [101.7, 1.4], [101.7, 1.5], [101.6, 1.5], [101.6, 1.4]
+          ],
+          [
+            [101.5, 1.6], [101.6, 1.6], [101.6, 1.7], [101.5, 1.7], [101.5, 1.6]
+          ]
+        ],
+        [
+          [
+            [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0]
+          ],
+          [
+            [100.35, 0.35], [100.65, 0.35], [100.65, 0.65], [100.35, 0.65], [100.35, 0.35]
+          ]
+        ]
+      ]
+  },
+  "properties": {
+    "name": "MultiPolygon",
+    "style": {
+        color: "black",
+        opacity: 1,
+        fillColor: "white",
+        fillOpacity: 1
+    }
+  }
+};
+
+new Vue({
+  el: '#app',
+  data: {
+    map: null,
+    tileLayer: null,
+    layers: [
+      {
+        id: 1,
+        name: 'Restaurants',
+        active: true,
+        features: [
+          {
+            id: 3,
+            name: 'Charlie Gitto\'s On the Hill',
+            type: 'marker',
+            coords: [100, .35],
+          },
+          {
+            id: 4,
+            name: 'Sugarfire',
+            type: 'marker',
+            coords: [34, -16],
+          },
+        ],
+      },
+      {
+        id: 1,
+        name: 'City/County Boundaries',
+        active: true,
+        features: [
+          {
+            id: 0,
+            name: 'City of St. Louis',
+            type: 'polygon',
+            coords: [
+              [18, 9],
+              [8, -9],
+              [18, -9],
+              [8, 9],
+            ],
+          },{
+            id: 1,
+            name: 'St. Louis County',
+            type: 'polygon',
+            coords: [
+              [34, 80],
+              [38, -90],
+              [32, 50],
+              [33.0],
+            ],
+          },
+        ],
+      }
+    ],
+  },
+  mounted() {
+    this.initMap();
+    this.initLayers();
+    this.initBuildings();
+  },
+  methods: {
+    initBuildings() {
+      //L.GeoJSON(buildings.geometry).addTo(this.map);
+      new L.GeoJSON(mp, {
+        style: function(feature) {
+            return feature.properties.style
+        }
+      }).addTo(this.map);
+    },
+    initLayers() {
+      this.layers.forEach((layer) => {
+        const markerFeatures = layer.features.filter(feature => feature.type === 'marker');
+        const polygonFeatures = layer.features.filter(feature => feature.type === 'polygon');
+        
+        markerFeatures.forEach((feature) => {
+          feature.leafletObject = L.marker(feature.coords)
+            .bindPopup(feature.name);
+        });
+        
+        polygonFeatures.forEach((feature) => {
+          feature.leafletObject = L.polygon(feature.coords)
+            .bindPopup(feature.name);
+        });
+
+        layer.features.forEach((feature) => {
+          feature.leafletObject.addTo(this.map);
+        });
+        
+      });
+    },
+    initMap() {
+      this.map = L.map('map', {
+        crs: L.CRS.Simple,
+        maxBounds: [[-1700, -1700], [1700, 1700]]
+      }).setView([0, 0]);
+    },
+  },
+});
+
+//new Vue({
+//  el: '#app',
+//  data: {
+//    map: null,
+//    tileLayer: null,
+//    layers: [],  
+//    buildings: buildings,
+//  },
+//  mounted() {
+//    this.initMap();
+//  },
+//  methods: { 
+//    initMap() {
+//      this.map = L.map("map", {
+//        crs: L.CRS.Simple,
+//        //maxBounds: [[-1700, 1700], [-1700, 1700]],
+//        maxBounds: [[-100, 100], [-100, 100]],
+//      });
+////      L.geoJSON(buildings, {
+////        style:
+////        {
+////          "color": "#ff7800",
+////          "weight": 5,
+////          "opacity": 0.65
+////        },
+////        filter: function(building) {
+////          return building;
+////        }
+////      }).addTo(this.map); 
+//      var geojsonFeature = {
+//          "type": "Feature",
+//          "properties": {
+//              "name": "Coors Field",
+//              "amenity": "Baseball Stadium",
+//              "popupContent": "This is where the Rockies play!"
+//          },
+//          "geometry": {
+//              "type": "Point",
+//              "coordinates": [-104, 39]
+//          }
+//      };
+//      var myStyle = {
+//          "color": "#ff7800",
+//          "weight": 5,
+//          "opacity": 0.65
+//      };
+//
+//      L.geoJSON(geojsonFeature, {
+//        style: myStyle
+//      }).addTo(this.map);
+//    },
+//  },
+//});
 
 

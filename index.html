@@ -38,7 +38,7 @@
             <div class="controlrow">
               <input type="range" min="0" max="100" value="50" class="slider"
               id="toggleFood" name="toggleFood">
-              <label for="toggleFood" ><p text-align=center>Food %</p></label>
+              <label for="toggleFood" >Food %</label>
             </div>
             <div class="controlrow">
               <input type="range" min="0" max="100" value="50" class="slider"
@@ -49,47 +49,52 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" id="calculations">
 
-        <div class="results" id="calculations">
-          <!-- CO2 results -->
-          <div class="col-md-2" id="CO2">  
-             <div id="CO2val"> </div>
-             units
-             CO2
-          </div>
+        <!-- CO2 results -->
+        <div class="col=sm-4 col-md-2" id="CO2">  
+          <span class="dot"></span>
+          <div class="resultval" id="co2val"> Placeholder </div>
+          <div class="units"> units </div>
+          <div class="resultname"> CO2 </div>
+        </div>
 
-          <!-- Cost results -->
-          <div class="col-md-2" id="Water">  
-             <div id="Waterval"> </div>
-             units
-             Water
-          </div>
+        <!-- Cost results -->
+        <div class="col-sm-4 col-md-2" id="Water">  
+          <span class="dot"></span>
+          <div class="resultval" id="waterval"> Placeholder </div>
+          <div class="units"> units </div>
+          <div class="resultname"> Water </div>
+        </div>
 
-          <div class="col-md-2" id="jobs">  
-             <div id="jobsval"> </div>
-             units
-             Jobs
-          </div>
+        <!-- Jobs results -->
+        <div class="col-sm-4 col-md-2" id="Jobs">  
+          <span class="dot"></span>
+          <div class="resultval" id="jobsval"> Placeholder </div>
+          <div class="units"> units </div>
+          <div class="resultname"> Jobs </div>
+        </div>
 
-          <div class="col-md-2" id="Energy">  
-             <div id="Energyval"> </div>
-             units
-             Energy
-          </div>
-          
-          <div class="col-md-2" id="Cost">  
-             <div id="Costval"> </div>
-             units
-             Cost
-          </div>
-          
-          <div class="col-md-2" id="other">  
-             <div id="otherval"> </div>
-             units
-             other
-          </div>
-        </div> <!-- end results container-->
+        <div class="col-sm-4 col-md-2" id="Energy">  
+          <span class="dot"></span>
+          <div class="resultval" id="energyval"> Placeholder </div>
+          <div class="units"> units </div>
+          <div class="resultname"> Energy </div>
+        </div>
+        
+        <div class="col-sm-4 col-md-2" id="Cost">  
+          <span class="dot"></span>
+          <div class="resultval" id="costval"> Placeholder </div>
+          <div class="units"> units </div>
+          <div class="resultname"> Cost </div>
+        </div>
+        
+        <div class="col-sm-4 col-md-2" id="other">  
+          <span class="dot"></span>
+          <div class="resultval" id="otherval"> Placeholder </div>
+          <div class="units"> units </div>
+          <div class="resultname"> Other </div>
+        </div>
       </div> <!-- end results row -->
 
     </div>

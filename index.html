@@ -21,20 +21,31 @@
 
         <!-- toggle bar is displayed here-->
         <div class="col-md-3">  
+          <h1> COST TBD </h1>
+          
+
+
           <h1> Customize Building </h1>
           <div id="toggle" class="controlpanel">   
-            <div class="controlrow">
+            
+            <!-- check boxes -->
+            <div class="controlrow switch">
               <input type="checkbox" id="toggleHP"> 
-              <label for="toggleHP">HP</label>
+              <div>HP</div>
+              <div class="toggle round"></div>
             </div> 
-            <div class="controlrow">
+            <div class="controlrow switch">
               <input type="checkbox" id="toggleWater"> 
               <label for="toggleWater">Water</label>
+              <div class="toggle round"></div>
             </div>
-            <div class="controlrow">
+            <div class="controlrow switch">
               <input type="checkbox" id="toggleGreenery"> 
               <label for="toggleGreenery">Greenery</label>
+              <div class="toggle round"></div>
             </div>
+
+            <!-- sliders -->
             <div class="controlrow">
               <input type="range" min="0" max="100" value="50" class="slider"
               id="toggleFood" name="toggleFood">
@@ -45,62 +56,19 @@
               id="togglePV" name="togglePV">
               <label for="togglePV">PV %</label>
             </div>
-              <div class = "col col-lg-2">
-<div class="controlpanel">   
-<div><label class="switch">
-  <input type="checkbox" id="toggleHP">
-  <span class="toggle round"></span>
-</label></div> 
-    <br>    
-<div><label class="switch">
-  <input type="checkbox" id="toggleWater">
-  <span class="toggle round"></span>
-</label></div>
-    <br>
-<div><label class="switch">
-  <input type="checkbox" id="toggleGreen">
-  <span class="toggle round"></span>
-</label></div>
-    <br>
-<div class="slidecontainer">
-  <input type="range" min="0" max="100" value="50" class="slider" id="myRange1">
-<!--<span id="demo1"></span>-->
-</div>
-    <br>
-<div class="slidecontainer">
-  <input type="range" min="0" max="100" value="50" class="slider" id="myRange2">
-<!--<span id="demo2"></span>-->
-</div>
           </div>
         </div>
       </div>
-<div class="row">    
-<div class="resultspanel">
- <svg id="CO2" width="100" height="100">
- <!--<text x="35" y=70 text-anchor="middle">CO2 Emissions</text>-->
- <circle cx="50" cy="25" r="25" fill="#A3E4D7"/>
- </svg>
-<svg id="Cost" width="100" height="100">
- <circle cx="50" cy="25" r="25" fill="#48C9B0"/>
- <text>Cost</text>
- </svg>
-<svg id="Food" width="100" height="100">
- <circle cx="50" cy="25" r="25" fill="#17A589"/>
- <text>Food %</text>
- </svg>
-<svg id="Job" width="100" height="100">
- <circle cx="50" cy="25" r="25" fill="#117864"/>
- <text>Jobs Created</text>
- 
- </svg>
-</div>
-    </div>
+
+
+      <!-- new row at bottom with placeholder -->
       <div class="row" id="calculations">
 
         <!-- CO2 results -->
         <div class="col=sm-4 col-md-2" id="CO2">  
-          <span class="dot"></span>
-          <div class="resultval" id="co2val"> Placeholder </div>
+          <span class="dot"></span> <!-- icon goes here -->
+          <div class="resultval" id="co2val"> Placeholder </div> <!-- will be
+          number -->
           <div class="units"> units </div>
           <div class="resultname"> CO2 </div>
         </div>

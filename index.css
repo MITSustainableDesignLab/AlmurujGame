@@ -9,7 +9,9 @@ html, body {
 }
 
 
-/* Map CSS */
+/***************************************
+ * Map CSS 
+ ***************************************/
 .leaflet-container {
     background-color:rgba(255,0,0,0.0);
 }
@@ -18,22 +20,32 @@ html, body {
     height: 700px;
 }
 
-
 /****************************************
- CSS related to building modification 
+ CSS related to capex and building modification 
  ****************************************/
 h1 {
-    color: var(--main-color);
-    margin-top: 15px;
-    margin-bottom: 15px;
+  color: var(--main-color);
+  margin-top: 15px;
+  margin-bottom: 5px;
+  font-size: 150%
+  font-weight: bold;
 }
-h6{
-font-family: Arial, sans-serif;
+
+/* CapEx CSS*/
+#capex {
+  font-weight: bold;
+  font-size: 200%;
+}
+
+/* building customization */
+ 
+h6 {
+  font-family: Arial, sans-serif;
 }
 
 .controlrow {
-    margin-bottom: 20px;
-    margin-right: 50%;
+  margin-bottom: 20px;
+  margin-right: 50%;
 }
 
 

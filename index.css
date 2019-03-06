@@ -18,17 +18,19 @@ html, body {
     height: 700px;
 }
 
-
-
 /* CSS related to building modification */
 h1 {
     color: var(--main-color);
     margin-top: 15px;
     margin-bottom: 15px;
 }
+h6{
+font-family: Arial, sans-serif;
+}
 
 .controlrow {
-    margin-bottom: 5px;
+    margin-bottom: 20px;
+    margin-right: 50%;
 }
 
 /* Start Toggle Switch CSS*/
@@ -72,11 +74,11 @@ h1 {
 }
 
 input:checked + .toggle {
-  background-color: #2196F3;
+  background-color: var(--main-color);
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px var(--main-color);
 }
 
 input:checked + .toggle:before {
@@ -94,6 +96,7 @@ input:checked + .toggle:before {
   border-radius: 50%;
 }
 
+/* Start Slider CSS*/
 
 .slider {
     -webkit-appearance: none;
@@ -133,10 +136,9 @@ input:checked + .toggle:before {
 }
 
 .slidecontainer {
-  width: 100%; /* Width of the outside container */
+  width: 100%;/* Width of the outside container */
+  margin-bottom: 20px;
 }
-
-
 
 /* CALCULATIONS / RESULTS css section */
 #calculations {

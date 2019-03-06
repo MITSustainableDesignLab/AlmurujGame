@@ -3,7 +3,12 @@
     <title>Almuruj Game</title>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"> 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src=https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.core.js></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="index.css">
   </head>
   <body>
@@ -22,44 +27,58 @@
         <!-- toggle bar is displayed here-->
         <div class="col-md-3">  
           <h1> COST TBD </h1>
-          
-
-
           <h1> Customize Building </h1>
-          <div id="toggle" class="controlpanel">   
-            
+          <div class="controlpanel">   
+            <div class="row">
+
             <!-- check boxes -->
-            <div class="controlrow switch">
+            
+            <div class="controlrow"><span><h6>High Performance</h6></span>
+            <label class="switch">
               <input type="checkbox" id="toggleHP"> 
-              <div>HP</div>
               <div class="toggle round"></div>
-            </div> 
-            <div class="controlrow switch">
-              <input type="checkbox" id="toggleWater"> 
-              <label for="toggleWater">Water</label>
-              <div class="toggle round"></div>
+            </label> 
             </div>
-            <div class="controlrow switch">
-              <input type="checkbox" id="toggleGreenery"> 
-              <label for="toggleGreenery">Greenery</label>
+
+            <div class="controlrow">
+            <span><h6>Water Efficient</h6></span>
+            <label class="switch">
+              <input type="checkbox" id="toggleWater"> 
+              <!--<label for="toggleWater">Water</label>-->
               <div class="toggle round"></div>
+            </label>
+            </div>
+            
+            <div class="controlrow">
+            <span><h6>Greenery</h6></span>
+            <label class="switch">
+              <input type="checkbox" id="toggleGreen"> 
+              <!--<label for="toggleGreenery">Greenery</label>-->
+              <div class="toggle round"></div>
+            </label>
             </div>
 
             <!-- sliders -->
-            <div class="controlrow">
-              <input type="range" min="0" max="100" value="50" class="slider"
-              id="toggleFood" name="toggleFood">
-              <label for="toggleFood" >Food %</label>
+            <div class="slidecontainer"> <h6>PV Panels</h6>
+            <input type="range" min="0" max="100" value="50" class="slider"
+              id="myRange1">
+            <!--<p>Value: <span id="demo1"></span></p>
+              <!--<label for="toggleFood" >Food %</label>-->
             </div>
-            <div class="controlrow">
+            <br>    
+            <div class="slidecontainer"> <h6>Greenhouse</h6>
               <input type="range" min="0" max="100" value="50" class="slider"
-              id="togglePV" name="togglePV">
-              <label for="togglePV">PV %</label>
+              id="myRange2" >
+                <!--<p>Value: <span id="demo2"></span></p>
+              <!--<label for="togglePV">PV %</label>-->
             </div>
-          </div>
+                
+            </div>
+          
+            </div>
         </div>
+          
       </div>
-
 
       <!-- new row at bottom with placeholder -->
       <div class="row" id="calculations">
@@ -67,16 +86,19 @@
         <!-- CO2 results -->
         <div class="col=sm-4 col-md-2" id="CO2">  
           <span class="dot"></span> <!-- icon goes here -->
-          <div class="resultval" id="co2val"> Placeholder </div> <!-- will be
+          <div class="resultval" id="co2val"> CO2 Emissions </div> <!-- will be
           number -->
-          <div class="units"> units </div>
-          <div class="resultname"> CO2 </div>
+          <div class="units"> units</div>
+          <div class="resultname"> 
+         <svg id="CO2" width="100" height="20">
+         </svg>
+        </div>
         </div>
 
         <!-- Cost results -->
         <div class="col-sm-4 col-md-2" id="Water">  
           <span class="dot"></span>
-          <div class="resultval" id="waterval"> Placeholder </div>
+          <div class="resultval" id="waterval"> Water Consumption </div>
           <div class="units"> units </div>
           <div class="resultname"> Water </div>
         </div>
@@ -84,30 +106,39 @@
         <!-- Jobs results -->
         <div class="col-sm-4 col-md-2" id="Jobs">  
           <span class="dot"></span>
-          <div class="resultval" id="jobsval"> Placeholder </div>
-          <div class="units"> units </div>
-          <div class="resultname"> Jobs </div>
+          <div class="resultval" id="jobsval"> Jobs Created </div>
+          <div class="units"> units (jobs) </div>
+          <div class="resultname"> 
+          <svg id="Job" width="100" height="20"> 
+          </svg>
+            </div>
         </div>
 
         <div class="col-sm-4 col-md-2" id="Energy">  
           <span class="dot"></span>
-          <div class="resultval" id="energyval"> Placeholder </div>
+          <div class="resultval" id="energyval"> Energy Consumption </div>
           <div class="units"> units </div>
           <div class="resultname"> Energy </div>
         </div>
         
         <div class="col-sm-4 col-md-2" id="Cost">  
           <span class="dot"></span>
-          <div class="resultval" id="costval"> Placeholder </div>
-          <div class="units"> units </div>
-          <div class="resultname"> Cost </div>
+          <div class="resultval" id="costval"> Cost in Dollars </div>
+          <div class="units"> units (dollars) </div>
+          <div class="resultname"> 
+          <svg id="Cost" width="100" height="20">
+          </svg>
+        </div>
         </div>
         
-        <div class="col-sm-4 col-md-2" id="other">  
+        <div class="col-sm-4 col-md-2" id="Food">  
           <span class="dot"></span>
-          <div class="resultval" id="otherval"> Placeholder </div>
+          <div class="resultval" id="otherval"> Food Percentage </div>
           <div class="units"> units </div>
-          <div class="resultname"> Other </div>
+          <div class="resultname"> 
+            <svg id="Food" width="100" height="20">
+          </svg>
+            </div>
         </div>
       </div> <!-- end results row -->
 

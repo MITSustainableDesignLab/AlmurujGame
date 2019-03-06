@@ -172,7 +172,8 @@ input:checked + .toggle:before {
     display: block;
     margin: auto;
     margin-top: 6px;
-    width: 75%;
+    width: 80%;
+    
 }
 /* CALCULATIONS / RESULTS css section */
 #calculations {
@@ -183,7 +184,7 @@ input:checked + .toggle:before {
 .dot {
   height: 75px;
   width: 75px;
-  background-color: #bbb;
+  background-color: #d9d9d9;
   border-radius: 50%;
   display: inline-block;
 }

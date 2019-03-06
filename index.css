@@ -140,6 +140,40 @@ input:checked + .toggle:before {
   margin-bottom: 20px;
 }
 
+.co2 {
+    display: block;
+    margin: auto;
+    margin-top: 5px;
+    width: 90%;
+}
+
+.water {
+    display: block;
+    margin: auto;
+    margin-top: 7px;
+    width: 45%;
+}
+
+.cost {
+    display: block;
+    margin: auto;
+    margin-top: 5px;
+    width: 90%;
+}
+
+.job {
+    display: block;
+    margin: auto;
+    margin-top: 6px;
+    width: 75%;
+}
+
+.greenhouse {
+    display: block;
+    margin: auto;
+    margin-top: 6px;
+    width: 75%;
+}
 /* CALCULATIONS / RESULTS css section */
 #calculations {
     padding: 10;

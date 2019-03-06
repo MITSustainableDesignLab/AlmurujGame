@@ -226,7 +226,7 @@ for (var i in all) {
 	    togglearray[0] = 1;
 	  } else {
 	    togglearray[0] = 0;
-	  }//console.log(togglearray);
+	  }
 	}
 	    
 	function toggleWater() {
@@ -235,7 +235,7 @@ for (var i in all) {
 	    togglearray[1] = 1;
 	  } else {
 	    togglearray[1] = 0;
-	  }//console.log(togglearray);
+	  }
 	}
 	
 	function toggleGreen() {
@@ -244,19 +244,17 @@ for (var i in all) {
 	    togglearray[2] = 1;
 	  } else {
 	    togglearray[2] = 0;
-	  }//console.log(togglearray);
+	  }
 	}
 	    
 	function slider1(){
 	    if(myRange1 != null){
 	    togglearray[3]= myRange1.value/100;
-	    //console.log(togglearray);
 	}}   
 	
 	function slider2(){
 	    if(myRange2 != null){
 	    togglearray[4]=myRange2.value/100;
-	    //console.log(togglearray)
 	    }
 	}
         
@@ -343,8 +341,6 @@ for (var i in all) {
         //calculate CO2 Total
         var CO2Total = (SumCO2EmissionsBase+(togglearray[0]*SumCO2EmissionsHighPerformance)+(togglearray[1]*SumCO2EmissionsWaterEfficient)+(togglearray[2]*SumCO2EmissionsGreenery)+(togglearray[3]*SumCO2EmissionsPVPanels)+(togglearray[4]*SumCO2EmissionsGreenhouse)).toFixed(2);
         
-        //Each time it changes create a text with the value of CO2Total... Problem: Remove old text
-        
         d3.select("text#textCO2").remove();
             
         d3.select("svg#CO2")
@@ -405,32 +401,10 @@ for (var i in all) {
           .attr("font-family", "sans-serif")
           .attr("fill", "black");
         })
-	    
-	    //console.log("CO2 Total:" + CO2Total);
-	    //console.log("Jobs Total:" + JobsTotal);
-	    //console.log("Cost Total:" + CostTotal);
-	    //console.log("Food Percentage:" + FoodPercentTotal);
-        
-	    //console.log(SumCO2EmissionsHighPerformance);
-	    //console.log(SumCO2EmissionsWaterEfficient);
-	    //console.log(SumCO2EmissionsPVPanels);
-	    //console.log(SumCO2EmissionsGreenhouse);
-	    //console.log(data[0]);
-	    //console.log(data.columns[1])
-	    //console.log(data[0].BuildingID)
-	    //var neighborhood = data;
-	    //console.log(data);
-	    //console.log(data.length);
-	    //console.log(data[0]);
-	    //console.log(Object.values(data[0]));
+
 	    
 	    let bldg = [];
 	    for (i = 0; i < data.length; i++) {
-	        //var b = "b"+i;
-	        //bldg[i] = data[i];
-	        //console.log(bldg[i])
-	        //Object.values(data[i])
 	        bldg.push(Object.values(data[i]));
-	        //console.log(data[i].Occupancy);
 	        }
 	});

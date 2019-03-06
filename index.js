@@ -1,13 +1,13 @@
 // create a map in the "map" div, set the view to a given place and zoom
 var map = L.map('map', {
-  //center: [0, 0],
   crs: L.CRS.Simple,
-  //maxBounds: [[-2000, -2000], [2000, 2000]],
   minZoom: -2 //zoom: -1,
 }).setView([0,0], -2);
 
 bounds = [[-2000, -2000], [2000, 2000]];
 map.fitBounds(bounds);
+
+var style = getComputedStyle(document.body);
 
 function onClick(e) {
   // e = event
@@ -31,7 +31,7 @@ for (var i in all) {
   var b = new L.GeoJSON(building, {
     onEachFeature: onEachFeature,
     style: {
-      color: '#228B22',
+      color: style.getPropertyValue('--main-color'),
       opacity: 0.7
     } 
   }).addTo(map);

@@ -19,18 +19,18 @@
       <!-- Modal that helps input the Game Parameters and Settings-->
       <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-        <div class="modal-header">
-        <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
-        </div>
-        <div class="modal-body">
-        <p>Some text in the modal.</p>
-        </div>
-        <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Start Game</button>
-        </div>
-        </div>
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+            </div>
+            <div class="modal-body">
+              <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Start Game</button>
+            </div>
+          </div>
         </div>
       </div>
     
@@ -49,6 +49,7 @@
         <!-- toggle bar is displayed here-->
         <div class="col-md-3">  
           <h1> COST TBD </h1>
+          <div id=capex> 0 </div>
           <!-- display budget here! -->
 
 
@@ -59,7 +60,7 @@
 
             <!-- check boxes -->
             <div class="controlrow">
-              <h6>High Performance</h6>
+              <h5>High Performance</h5>
               <label class="switch">
                 <input type="checkbox" id="toggleHP"> 
                 <div class="toggle round"></div>
@@ -67,7 +68,7 @@
             </div>
 
             <div class="controlrow">
-              <h6>Water Efficient</h6>
+              <h5>Water Efficient</h5>
               <label class="switch">
                 <input type="checkbox" id="toggleWater"> 
                 <div class="toggle round"></div>
@@ -75,26 +76,23 @@
             </div>
             
             <div class="controlrow">
-              <h6>Greenery</h6>
+              <h5>Landscaping</h5>
               <label class="switch">
                 <input type="checkbox" id="toggleGreen"> 
                 <div class="toggle round"></div>
               </label>
             </div>
-
-
-
+                
             <!-- sliders -->
-            <div class="slidecontainer"> <h5>PV Panels</h5>
-            <input type="range" min="0" max="100" value="50" class="slider"
-              id="myRange1">
-            <!--<p>Value: <span id="demo1"></span></p>
-              <!--<label for="toggleFood" >Food %</label>-->
-            </div>
-            <br>    
-            <div class="slidecontainer"> <h5>Greenhouse</h5>
+            <div class="slidecontainer">
+              <h5>PV Panels</h5>
               <input type="range" min="0" max="100" value="50" class="slider"
-              id="toggleFood">
+                     id="togglePV">
+            </div> 
+            <div class="slidecontainer">
+              <h5>Greenhouse</h5>
+              <input type="range" min="0" max="100" value="50" class="slider"
+                     id="toggleFood">
             </div>
 
           </div> <!-- end control panel-->
@@ -149,7 +147,7 @@
           <span class="dot"><img class="cost" src="logos/cost.svg"></span>
           <div class="resultval" id="costval"> 0 </div>
           <div class="units"> dollars </div>
-          <div class="resultname"> Cost </div>
+          <div class="resultname"> OpEx Cost </div>
         </div>
         
         <!-- Food -->

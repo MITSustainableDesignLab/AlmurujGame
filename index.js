@@ -9,39 +9,14 @@ var style = getComputedStyle(document.body);
 /********************************************
  * Data loading 
  ********************************************/
-// function readTextFile(file)
-// {
-//     var rawFile = new XMLHttpRequest();
-//     rawFile.open("GET", file, false);
-//     rawFile.onreadystatechange = function ()
-//     {
-//         if(rawFile.readyState === 4)
-//         {
-//             if(rawFile.status === 200 || rawFile.status == 0)
-//             {
-//                 var allText = rawFile.responseText;
-//                 alert(allText);
-//             }
-//         }
-//     }
-//     rawFile.send(null);
-// }
-// 
-// var loc = window.location.pathname;
-// var dir = loc.substring(0, loc.lastIndexOf('/'));
-// console.log(dir)
-// var file = readTextFile("file://".concat(dir, "/data.csv"), {mode: 'no-cors'});
-// console.log(file)
-// var data = $.csv.toObjects(file);
-// console.log(data)
+var current = {};
+d3.csv("data.csv").then(function(data){
+  data.forEach(function(d) {
+    current[d.BuildingID] = d
+  });
+});
 
-//var csv_data = d3.csv(
-//  "https://gist.github.com/meiaalsup/ec96c6b174adae3906e49c142109ac85",
-//  { mode: 'no-cors' }
-//);
-//console.log('csv data');
-//console.log(typeof csv_data);
-//console.log(csv_data);
+console.log(current)
 
 /********************************************
  * Create a map in the "map" div, set the view to a given place and zoom
@@ -89,7 +64,7 @@ for (var i in all) {
 
 
      d3.csv("buildings.csv").then(function(data){
-       console.log(data)
+     //  console.log(data)
       var Occupancy = [];
 	    //for CO2 calculation
 	    var CO2EmissionsBase = [];

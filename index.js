@@ -1,4 +1,51 @@
-// create a map in the "map" div, set the view to a given place and zoom
+/********************************************
+ * Setup
+ ********************************************/
+
+// get css styles dynamically (make them accessible here)
+var style = getComputedStyle(document.body);
+
+
+/********************************************
+ * Data loading 
+ ********************************************/
+// function readTextFile(file)
+// {
+//     var rawFile = new XMLHttpRequest();
+//     rawFile.open("GET", file, false);
+//     rawFile.onreadystatechange = function ()
+//     {
+//         if(rawFile.readyState === 4)
+//         {
+//             if(rawFile.status === 200 || rawFile.status == 0)
+//             {
+//                 var allText = rawFile.responseText;
+//                 alert(allText);
+//             }
+//         }
+//     }
+//     rawFile.send(null);
+// }
+// 
+// var loc = window.location.pathname;
+// var dir = loc.substring(0, loc.lastIndexOf('/'));
+// console.log(dir)
+// var file = readTextFile("file://".concat(dir, "/data.csv"), {mode: 'no-cors'});
+// console.log(file)
+// var data = $.csv.toObjects(file);
+// console.log(data)
+
+//var csv_data = d3.csv(
+//  "https://gist.github.com/meiaalsup/ec96c6b174adae3906e49c142109ac85",
+//  { mode: 'no-cors' }
+//);
+//console.log('csv data');
+//console.log(typeof csv_data);
+//console.log(csv_data);
+
+/********************************************
+ * Create a map in the "map" div, set the view to a given place and zoom
+ ********************************************/
 var map = L.map('map', {
   //center: [0, 0],
   crs: L.CRS.Simple,
@@ -6,11 +53,11 @@ var map = L.map('map', {
   minZoom: -2 //zoom: -1,
 }).setView([0,0], -2);
 
+
 bounds = [[-2000, -2000], [2000, 2000]];
 map.fitBounds(bounds);
 
 function onClick(e) {
-  // e = event
   var id = e.target.feature.id
   console.log(id);
   // You can make your ajax call declaration here
@@ -24,7 +71,7 @@ function onEachFeature(feature, layer) {
     });
 }
 
-all = commercial["features"].concat(residential["features"]);
+var all = commercial["features"].concat(residential["features"]);
 
 for (var i in all) {
   var building = all[i];
@@ -38,8 +85,12 @@ for (var i in all) {
   b.addTo(map);
 }
 
+
+
+
      d3.csv("buildings.csv").then(function(data){
-        var Occupancy = [];
+       console.log(data)
+      var Occupancy = [];
 	    //for CO2 calculation
 	    var CO2EmissionsBase = [];
 	    var CO2EmissionsHighPerformance = [];

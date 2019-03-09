@@ -15,6 +15,14 @@ var DEFAULT_LANDSCAPING = 0; // 0 means no landscaping
 var DEFAULT_ROOF_USAGE = 0; // default is roof is not used at all
 var DEFAULT_PV_FOOD_SPLIT = .5; // default half the roof for pv, half for food
 
+function reset_defaults() {
+  hp.checked = false;
+  water_el.checked = false;
+  green.checked = false;
+  roof.value = DEFAULT_ROOF_USAGE*100;
+  split.value = DEFAULT_PV_FOOD_SPLIT*100;
+}
+
 function populate_building_config(d) {
   var obj = {
     // configuration
@@ -100,7 +108,7 @@ function process_data(data) {
     if (d.BuildingID.length > 3) {
       database[d.BuildingID] = populate_data(d);
       base.co2 += parseFloat(d.CO2EmissionsBase); // sum of water energy and food c02 base
-      base.water += parseFloat(d.CO2WaterBase);
+      base.water += parseFloat(d.WaterBase);
       base.jobs += parseFloat(d.JobsBase);
       base.energy += parseFloat(d.EnergyBase);
       base.opex += parseFloat(d.OpCostBase);  // this is sum of food, water energy base
@@ -139,9 +147,10 @@ populate();
 
 function populate() { // populate the bottom row with correct values
   var values = calculate();
+  console.log(values)
   document.getElementById("capex").innerHTML = numberWithCommas(Math.round(values.capex/1000)); // in millions
-  document.getElementById("co2val").innerHTML = numberWithCommas(Math.round(values.co2/1000/1000)); // kg to 10^3 tons
-  document.getElementById("waterval").innerHTML = numberWithCommas(Math.round(values.water/1000/1000)); // liters to 10^3 m^3
+  document.getElementById("co2val").innerHTML = numberWithCommas(Math.round(values.co2/1000)); // kg to tons
+  document.getElementById("waterval").innerHTML = numberWithCommas(Math.round(values.water/1000)); // liters to m^3
   document.getElementById("jobsval").innerHTML = numberWithCommas(Math.round(values.jobs));
   document.getElementById("opexval").innerHTML = numberWithCommas(Math.round(values.opex/1000)); // in millions
   document.getElementById("energyval").innerHTML = numberWithCommas(Math.round(values.energy/1000)); // kWH to gWH
@@ -177,7 +186,6 @@ function calculate_capex() {
     capex += building_config[id].roof_usage * building_config[id].roof_split * database[id].pv.capex;
     capex += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.capex;
   };
-  console.log(capex);
   return capex;
 };
 
@@ -259,11 +267,11 @@ function calculate_food() {
 var current_clicked = new Set();
 
 // get clickable elements
-hp = document.getElementById("toggleHP")
-water_el = document.getElementById("toggleWater")
-green = document.getElementById("toggleGreen")
-roof = document.getElementById("toggleRoof")
-split = document.getElementById("togglePVFood")
+hp = document.getElementById("toggleHP");
+water_el = document.getElementById("toggleWater");
+green = document.getElementById("toggleGreen");
+roof = document.getElementById("toggleRoof");
+split = document.getElementById("togglePVFood");
 
 // add click event listeners
 hp.addEventListener("click", toggleHP);
@@ -276,7 +284,6 @@ function adjust_buildings(property, val) {
   var ids = Array.from(current_clicked)
   ids.forEach( function(id) {
     building_config[id][property] = val;
-    console.log(building_config[id])
   })
 }
 
@@ -293,14 +300,11 @@ function togglegreen() {
 }
 
 function toggle(obj, property) {
-  console.log('click event works!')
   if (obj.checked == true) {
     adjust_buildings(property, 1);
   } else {
     adjust_buildings(property, 0);
   }
-  console.log(current_clicked);
-  console.log(building_config);
   populate();
 }
 
@@ -308,8 +312,9 @@ function sliderroof() {
   slider('roof_usage', roof.value/100);
 }
 
+
 function slidersplit() {
-  slider('split_usage', split.value/100);
+  slider('roof_split', split.value/100);
 }
 
 function slider(property, val) {
@@ -343,8 +348,7 @@ function onClick(e) {
     current_clicked.add(id);
     buildings[id].setStyle({color: style.getPropertyValue('--clicked-color')});
   }
-  console.log(current_clicked)
-  
+  reset_defaults();
 }
 
 

@@ -41,13 +41,13 @@
       <div class="row">
         
         <!-- map is displayed here-->
-        <div class="col-md-9">  
+        <div class="col-md-8">  
           <div id="map" class="map">
           </div>
         </div>
 
         <!-- toggle bar is displayed here-->
-        <div class="col-md-3">  
+        <div class="col-md-4">  
           <h1> COST TBD </h1>
           <div id=capex> 0 </div>
           <!-- display budget here! -->
@@ -85,14 +85,19 @@
                 
             <!-- sliders -->
             <div class="slidecontainer">
-              <h5>PV Panels</h5>
-              <input type="range" min="0" max="100" value="50" class="slider"
-                     id="togglePV">
-            </div> 
+              <h5>Roof Usage for PV and Greenhouse</h5>
+              <input type="range" min="0" max="100" value="0"
+                     class="slider" id="toggleRoof"> 
+              <p style="text-align:left; margin-top:10px">0%
+                <span style="float:right;">100%</span>
+              </p>
             <div class="slidecontainer">
-              <h5>Greenhouse</h5>
+              <h5>PV to Greenhouse % Split</h5>
               <input type="range" min="0" max="100" value="50" class="slider"
-                     id="toggleFood">
+                     id="togglePVFood">
+              <p style="text-align:left; margin-top:10px">0%
+                <span style="float:right;">100%</span>
+              </p>
             </div>
 
           </div> <!-- end control panel-->
@@ -102,7 +107,7 @@
       </div> <!-- end top row -->
 
       <!-- new row at bottom with placeholder -->
-      <div class="row" id="calculations">
+      <div class="row col-md-12" id="calculations">
 
         <!-- CO2 results -->
         <div class="col=sm-4 col-md-2" id="CO2">  

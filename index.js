@@ -7,16 +7,82 @@ var style = getComputedStyle(document.body);
 
 
 /********************************************
+ * Configuration (toggle settings at a given point in time)
+ ********************************************/
+var DEFAULT_HP = 0; // 0 means not high performance
+var DEFAULT_WE = 0; // 0 means not water efficient
+var DEFAULT_LANDSCAPING = 0; // 0 means no landscaping
+var DEFAULT_ROOF_USAGE = 0; // default is roof is not used at all
+var DEFAULT_PV_FOOD_SPLIT = .5; // default half the roof for pv, half for food
+
+function populate_building_config(d) {
+  var obj = {
+    // configuration
+    hp: DEFAULT_HP, // high performance
+    we: DEFAULT_WE, // water efficient
+    landscaping: DEFAULT_LANDSCAPING, // landscaping
+    roof_usage: DEFAULT_ROOF_USAGE,
+    roof_split: DEAFULT_PV_FOOD_SPLIT,
+  };
+  return obj;
+};
+
+
+/********************************************
  * Data loading 
  ********************************************/
-var current = {};
+var base = {
+  capex: 0, // on top
+  co2: 0,
+  water: 0,
+  jobs: 0,
+  energy: 0,
+  opex: 0,
+  food: 0,
+};
+
+
+var database = {}; // full data set
+
+
+var building_config = {};
+
+
+
+
+
 d3.csv("data.csv").then(function(data){
   data.forEach(function(d) {
-    current[d.BuildingID] = d
+    database[d.BuildingID] = d;
+    base.co2 += parseFloat(d.CO2EmissionsBase); // sum of water energy and food c02 base
+    base.water += parseFloat(d.CO2WaterBase);
+    base.jobs += parseFloat(d.JobsBase);
+    base.energy += parseFloat(d.EnergyBase);
+    base.opex += parseFloat(d.OpCostBase);  // this is sum of food, water energy base
+    base.food += parseFloat(d.FoodPercentageBase);
+    building_config[d.BuildingID] = populate_building_config();
   });
 });
 
-console.log(current)
+console.log(database);
+console.log(base);
+
+
+
+
+
+/********************************************
+ * Populate the values on site from "current" object
+ ********************************************/
+
+function populate() {
+
+
+};
+
+
+
+
 
 /********************************************
  * Create a map in the "map" div, set the view to a given place and zoom

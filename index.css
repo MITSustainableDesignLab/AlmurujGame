@@ -1,5 +1,6 @@
 :root {
   --main-color: #53AE96; 
+  --subtitle-color: #308db2; 
   --clicked-color: #800000;
 }
 
@@ -8,6 +9,21 @@ html, body {
     padding: 0;
     font-family: 'Helvetica';
 }
+
+/******* TITLE ******/
+h2 { /* title */
+  margin-top: 10px;
+  color: var(--main-color);
+  text-align: center;
+}
+
+h3 {  /* subtitle */
+  color: var(--main-color);
+  text-align: center;
+  font-size: 110%;
+  font-style: italic;
+}
+
 
 /* Map CSS */
 .leaflet-container {
@@ -26,6 +42,7 @@ h1 {
     color: var(--main-color);
     margin-top: 15px;
     margin-bottom: 15px;
+    font-size: 200%
 }
 
 #capex {

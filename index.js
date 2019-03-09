@@ -140,15 +140,18 @@ populate();
 
 function populate() { // populate the bottom row with correct values
   var values = calculate();
-  document.getElementById("capex").innerHTML = String(Math.round(values.capex));
-  document.getElementById("co2val").innerHTML = String(Math.round(values.co2));
-  document.getElementById("waterval").innerHTML = String(Math.round(values.water));
-  document.getElementById("jobsval").innerHTML = String(Math.round(values.jobs));
-  document.getElementById("opexval").innerHTML = String(Math.round(values.opex));
-  document.getElementById("energyval").innerHTML = String(Math.round(values.energy));
-  document.getElementById("foodval").innerHTML = String(Math.round(values.food));
+  document.getElementById("capex").innerHTML = numberWithCommas(Math.round(values.capex/1000)); // in millions
+  document.getElementById("co2val").innerHTML = numberWithCommas(Math.round(values.co2/1000/1000)); // kg to 10^3 tons
+  document.getElementById("waterval").innerHTML = numberWithCommas(Math.round(values.water/1000/1000)); // liters to 10^3 m^3
+  document.getElementById("jobsval").innerHTML = numberWithCommas(Math.round(values.jobs));
+  document.getElementById("opexval").innerHTML = numberWithCommas(Math.round(values.opex/1000)); // in millions
+  document.getElementById("energyval").innerHTML = numberWithCommas(Math.round(values.energy/1000)); // kWH to gWH
+  document.getElementById("foodval").innerHTML = numberWithCommas(Math.round(values.food));
 }
 
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 
 function calculate() {
   var current = {

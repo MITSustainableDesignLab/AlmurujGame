@@ -148,11 +148,11 @@ populate();
 function populate() { // populate the bottom row with correct values
   var values = calculate();
   console.log(values)
-  document.getElementById("capex").innerHTML = numberWithCommas(Math.round(values.capex/1000)); // in millions
+  document.getElementById("capex").innerHTML = numberWithCommas(Math.round(values.capex)); // in millions
   document.getElementById("co2val").innerHTML = numberWithCommas(Math.round(values.co2/1000)); // kg to tons
   document.getElementById("waterval").innerHTML = numberWithCommas(Math.round(values.water/1000)); // liters to m^3
   document.getElementById("jobsval").innerHTML = numberWithCommas(Math.round(values.jobs));
-  document.getElementById("opexval").innerHTML = numberWithCommas(Math.round(values.opex/1000)); // in millions
+  document.getElementById("opexval").innerHTML = numberWithCommas(Math.round(values.opex)); // in millions
   document.getElementById("energyval").innerHTML = numberWithCommas(Math.round(values.energy/1000)); // kWH to gWH
   document.getElementById("foodval").innerHTML = numberWithCommas(Math.round(values.food));
 }

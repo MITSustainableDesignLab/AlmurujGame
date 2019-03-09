@@ -1,5 +1,6 @@
 :root {
   --main-color: #53AE96; 
+  --clicked-color: #800000;
 }
 
 html, body {

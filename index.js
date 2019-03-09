@@ -22,7 +22,7 @@ function populate_building_config(d) {
     we: DEFAULT_WE, // water efficient
     landscaping: DEFAULT_LANDSCAPING, // landscaping
     roof_usage: DEFAULT_ROOF_USAGE,
-    roof_split: DEAFULT_PV_FOOD_SPLIT,
+    roof_split: DEFAULT_PV_FOOD_SPLIT,
   };
   return obj;
 };
@@ -31,57 +31,230 @@ function populate_building_config(d) {
 /********************************************
  * Data loading 
  ********************************************/
+
+
+
+function populate_data(d) {
+  var building = {
+    use: d.Use,
+    name: d.BuildingName,
+    hp: {
+      capex: parseFloat(d.InvestmentCostHP),
+      co2: parseFloat(d.CO2EmissionsHighPerformance),
+      water: parseFloat(d.WaterHighPerformance),
+      jobs: parseFloat(d.JobsHighPerformance),
+      opex: parseFloat(d.OpCostHP),
+    },
+    we: {
+      capex: parseFloat(d.InvestmentCostWaterEfficient),
+      co2: parseFloat(d.CO2EmissionsWaterEfficient),
+      water: parseFloat(d.WaterWaterEfficient),
+      jobs: parseFloat(d.JobsWaterEfficient),
+      opex: parseFloat(d.OpCostWaterEfficient),
+      energy: parseFloat(d.EnergyWaterEfficient),
+    },
+    landscaping: {
+      capex: parseFloat(d.InvestmentCostGreenery),
+      co2: parseFloat(d.CO2EmissionsGreenery),
+      water: parseFloat(d.WaterGreenery),
+      jobs: parseFloat(d.JobsGreenery),
+      opex: parseFloat(d.OpCostGreenery),
+      energy: parseFloat(d.EnergyGreenery),
+    },
+    pv: {
+      capex: parseFloat(d.InvestmentCostPVPanels),
+      co2: parseFloat(d.CO2EmissionsPVPanels),
+      jobs: parseFloat(d.JobsPVPanels),
+      opex: parseFloat(d.OpCostPVPanels),
+      energy: parseFloat(d.EnergyPVPanels),
+    },
+    greenhouse: {
+      capex: parseFloat(d.InvestmentCostGreenhouse),
+      co2: parseFloat(d.CO2EmissionsGreenhouse),
+      water: parseFloat(d.WaterGreenhouse100),
+      jobs: parseFloat(d.JobsGreenhouse),
+      opex: parseFloat(d.OpCostGreenhouse),
+      energy: parseFloat(d.EnergyGreenhouse),
+      food: parseFloat(d.FoodPercentageGreenhouse100),
+    },
+  };
+  return building;
+}
+
+
+function getdatafromfile(filename) {
+  // Read annotation file. Example : %timeinstant \t %value \n
+  // Return an array of string
+  var arraydata;
+  $.ajax({
+    type: "GET",
+    url: filename,
+    dataType: "text",
+    async: false,
+    success: function(csv) {arraydata = $.csv.toObjects(csv); }
+  });
+  return arraydata;
+}
+
+function process_data(data) {
+  data.forEach(function(d) {
+    if (d.BuildingID.length > 3) {
+      database[d.BuildingID] = populate_data(d);
+      base.co2 += parseFloat(d.CO2EmissionsBase); // sum of water energy and food c02 base
+      base.water += parseFloat(d.CO2WaterBase);
+      base.jobs += parseFloat(d.JobsBase);
+      base.energy += parseFloat(d.EnergyBase);
+      base.opex += parseFloat(d.OpCostBase);  // this is sum of food, water energy base
+      base.food += parseFloat(d.FoodPercentageBase);
+      building_config[d.BuildingID] = populate_building_config();
+    }
+  });
+};
+
+var file = "data.csv";
+arraydata = getdatafromfile(file);
+
+// populated in process data
+var database = {}; // full data set
+var building_config = {}; // current building configurations id: config
 var base = {
   capex: 0, // on top
   co2: 0,
   water: 0,
   jobs: 0,
-  energy: 0,
   opex: 0,
+  energy: 0,
   food: 0,
 };
 
+process_data(arraydata);
 
-var database = {}; // full data set
-
-
-var building_config = {};
-
-
-
-
-
-d3.csv("data.csv").then(function(data){
-  data.forEach(function(d) {
-    database[d.BuildingID] = d;
-    base.co2 += parseFloat(d.CO2EmissionsBase); // sum of water energy and food c02 base
-    base.water += parseFloat(d.CO2WaterBase);
-    base.jobs += parseFloat(d.JobsBase);
-    base.energy += parseFloat(d.EnergyBase);
-    base.opex += parseFloat(d.OpCostBase);  // this is sum of food, water energy base
-    base.food += parseFloat(d.FoodPercentageBase);
-    building_config[d.BuildingID] = populate_building_config();
-  });
-});
-
-console.log(database);
-console.log(base);
-
-
+const ids = Object.keys(database);
 
 
 
 /********************************************
  * Populate the values on site from "current" object
  ********************************************/
+populate();
 
-function populate() {
+function populate() { // populate the bottom row with correct values
+  var values = calculate();
+  document.getElementById("capex").innerHTML = String(Math.round(values.capex));
+  document.getElementById("co2val").innerHTML = String(Math.round(values.co2));
+  document.getElementById("waterval").innerHTML = String(Math.round(values.water));
+  document.getElementById("jobsval").innerHTML = String(Math.round(values.jobs));
+  document.getElementById("opexval").innerHTML = String(Math.round(values.opex));
+  document.getElementById("energyval").innerHTML = String(Math.round(values.energy));
+  document.getElementById("foodval").innerHTML = String(Math.round(values.food));
+}
 
 
+function calculate() {
+  var current = {
+    capex: calculate_capex(),
+    co2: calculate_co2(),
+    water: calculate_water(),
+    jobs: calculate_jobs(),
+    opex: calculate_opex(),
+    energy: calculate_energy(),
+    food: calculate_food(),
+  };
+  return current;
 };
 
 
+/* TODO: get rid of repeated code here */
 
+function calculate_capex() {
+  capex = base.capex;
+  for (const id of ids) {
+    capex += building_config[id].hp * database[id].hp.capex;
+    capex += building_config[id].we * database[id].we.capex;
+    capex += building_config[id].landscaping * database[id].landscaping.capex;
+    capex += building_config[id].roof_usage * building_config[id].roof_split * database[id].pv.capex;
+    capex += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.capex;
+  };
+  console.log(capex);
+  return capex;
+};
+
+function calculate_co2() {
+  co2 = base.co2;
+  for (const id of ids) {
+    co2 += building_config[id].hp * database[id].hp.co2;
+    co2 += building_config[id].we * database[id].we.co2;
+    co2 += building_config[id].landscaping * database[id].landscaping.co2;
+    co2 += building_config[id].roof_usage * building_config[id].roof_split * database[id].pv.co2;
+    co2 += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.co2;
+  };
+  return co2;
+};
+
+
+function calculate_water() {
+  water = base.water;
+  for (const id of ids) {
+    water += building_config[id].hp * database[id].hp.water;
+    water += building_config[id].we * database[id].we.water;
+    water += building_config[id].landscaping * database[id].landscaping.water;
+    water += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.water;
+  };
+  return water;
+};
+
+
+function calculate_jobs() {
+  jobs = base.jobs;
+  for (const id of ids) {
+    jobs += building_config[id].hp * database[id].hp.jobs;
+    jobs += building_config[id].we * database[id].we.jobs;
+    jobs += building_config[id].landscaping * database[id].landscaping.jobs;
+    jobs += building_config[id].roof_usage * building_config[id].roof_split * database[id].pv.jobs;
+    jobs += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.jobs;
+  };
+  return jobs;
+};
+
+
+function calculate_opex() {
+  opex = base.opex
+  for (const id of ids) {
+    opex += building_config[id].hp * database[id].hp.opex;
+    opex += building_config[id].we * database[id].we.opex;
+    opex += building_config[id].landscaping * database[id].landscaping.opex;
+    opex += building_config[id].roof_usage * building_config[id].roof_split * database[id].pv.opex;
+    opex += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.opex;
+  };
+  return opex;
+}
+
+
+function calculate_energy() {
+  energy = base.energy
+  for (const id of ids) {
+    energy += building_config[id].we * database[id].we.energy;
+    energy += building_config[id].landscaping * database[id].landscaping.energy;
+    energy += building_config[id].roof_usage * building_config[id].roof_split * database[id].pv.energy;
+    energy += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.energy;
+  };
+  return energy;
+}
+
+function calculate_food() {
+  food = base.food
+  for (const id of ids) {
+    food += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.food;
+  };
+  return food;
+}
+
+
+/**************************************************
+ * Modifications as needed!
+ **************************************************/
+
+var current_clicked = new Set();
 
 
 /********************************************
@@ -98,12 +271,21 @@ var map = L.map('map', {
 bounds = [[-2000, -2000], [2000, 2000]];
 map.fitBounds(bounds);
 
+
 function onClick(e) {
   var id = e.target.feature.id
-  console.log(id);
-  // You can make your ajax call declaration here
-  //$.ajax(... 
+  
+  if (current_clicked.has(id)) {
+    current_clicked.delete(id);
+    buildings[id].setStyle({color: style.getPropertyValue('--main-color')});
+  } else {
+    current_clicked.add(id);
+    buildings[id].setStyle({color: style.getPropertyValue('--clicked-color')});
+  }
+  console.log(current_clicked)
+  
 }
+
 
 function onEachFeature(feature, layer) {
     //bind click
@@ -114,20 +296,27 @@ function onEachFeature(feature, layer) {
 
 var all = commercial["features"].concat(residential["features"]);
 
+var buildings = {}
+
 for (var i in all) {
   var building = all[i];
   var b = new L.GeoJSON(building, {
     onEachFeature: onEachFeature,
     style: {
-      color: '#228B22',
+      color: style.getPropertyValue('--main-color'),
       opacity: 0.7
     } 
-  }).addTo(map);
+  });
+  buildings[all[i].id] = b
   b.addTo(map);
 }
 
 
 
+
+
+
+/*
 
      d3.csv("buildings.csv").then(function(data){
      //  console.log(data)
@@ -500,3 +689,5 @@ for (var i in all) {
 	        bldg.push(Object.values(data[i]));
 	        }
 	});
+
+*/

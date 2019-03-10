@@ -261,7 +261,7 @@ function calculate_food() {
 
 
 /**************************************************
- * Modifications as needed!
+ * Modifications when clicks made as needed!
  **************************************************/
 
 var current_clicked = new Set();
@@ -281,7 +281,7 @@ roof.addEventListener("click", sliderroof);
 split.addEventListener("click", slidersplit);
 
 function adjust_buildings(property, val) {
-  var ids = Array.from(current_clicked)
+  var ids = Array.from(current_clicked) // because set obj not iterable, use arr
   ids.forEach( function(id) {
     building_config[id][property] = val;
   })

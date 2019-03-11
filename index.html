@@ -2,114 +2,137 @@
   <head>
     <title>Almuruj Game</title>
     <meta charset="utf-8">
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css"> 
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src=https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.core.js></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.core.js"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js" charset="utf-8"></script>
 
     <link rel="stylesheet" href="index.css">
 
   </head>
 
   <body>
-    
+    <h2> Re-Imagine Al Muruj</h2>
+    <h3> Developing holistic sustainability concepts for neighborhoods </h3>
+    <!-- Modal that helps input the Game Parameters and Settings-->
+      <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
+            </div>
+            <div class="modal-body">
+              <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Start Game</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
     <!-- App goes here -->
     <div id="app" class="container col-md-12">
 
       <!-- top row includes map, budget, and building customization -->
       <div class="row">
-        
+
         <!-- map is displayed here-->
-        <div class="col-md-8">  
+        <div class="col-md-8">
           <div id="map" class="map">
           </div>
         </div>
 
         <!-- toggle bar is displayed here-->
-        <div class="col-md-4">  
-          <h1> CAPEX / INVESTMENT </h1> <div id="capex"> 0 </div>
+        <div class="col-md-4">
+          <h1> Project Budget $ (thousands) </h1>
+          <div id=capex> 0 </div>
           <!-- display budget here! -->
 
 
-          <h1> CUSTOMIZE BUILDING </h1>
+          <h1> Customize Buildings </h1>
 
 
-          <div class="controlpanel">   
+          <div class="controlpanel">
 
             <!-- check boxes -->
             <div class="controlrow">
-              <h6>High Performance</h6>
+              <h5>High Performance</h5>
               <label class="switch">
-                <input type="checkbox" id="toggleHP"> 
-                <div class="toggle round"></div>
-              </label> 
-            </div>
-
-            <div class="controlrow">
-              <h6>Water Efficient</h6>
-              <label class="switch">
-                <input type="checkbox" id="toggleWater"> 
-                <div class="toggle round"></div>
-              </label>
-            </div>
-            
-            <div class="controlrow">
-              <h6>Landscaping</h6>
-              <label class="switch">
-                <input type="checkbox" id="toggleGreen"> 
+                <input type="checkbox" id="toggleHP" value="FALSE">
                 <div class="toggle round"></div>
               </label>
             </div>
 
+            <div class="controlrow">
+              <h5>Water Efficient</h5>
+              <label class="switch">
+                <input type="checkbox" id="toggleWater">
+                <div class="toggle round"></div>
+              </label>
+            </div>
+
+            <div class="controlrow">
+              <h5>Landscaping</h5>
+              <label class="switch">
+                <input type="checkbox" id="toggleGreen">
+                <div class="toggle round"></div>
+              </label>
+            </div>
 
             <!-- sliders -->
-            <div class="controlrow slidecontainer"> 
-              <h6>PV Panels</h6>
+            <div class="slidecontainer">
+              <h5>Roof Usage for PV and Greenhouse</h5>
+              <input type="range" min="0" max="100" value="0"
+                     class="slider" id="toggleRoof">
+              <p style="text-align:left; margin-top:10px">0%
+                <span style="float:right;">100%</span>
+              </p>
+            <div class="slidecontainer">
+              <h5> % of Rooftop for PV (rest Greenhouse) </h5>
               <input type="range" min="0" max="100" value="50" class="slider"
-              id="togglePV">
-            </div>
-
-            <div class="controlrow slidecontainer">
-              <h6>Greenhouse</h6>
-              <input type="range" min="0" max="100" value="50" class="slider"
-              id="toggleFood">
+                     id="togglePVFood">
+              <p style="text-align:left; margin-top:10px">0%
+                <span style="float:right;">100%</span>
+              </p>
             </div>
 
           </div> <!-- end control panel-->
-                
+
         </div> <!-- end col with control panel -->
-          
+
       </div> <!-- end top row -->
 
       <!-- new row at bottom with placeholder -->
-      <div class="row" id="calculations">
+      <div class="row col-md-12" id="calculations">
 
         <!-- CO2 results -->
-        <div class="col=sm-4 col-md-2" id="CO2">  
+        <div class="col=sm-4 col-md-2" id="CO2">
           <span class="dot">
             <img class="co2" src="logos/co2.svg">
           </span> <!-- icon goes here -->
           <div class="resultval" id="co2val"> 0 </div>
-          <div class="units"> units</div>
+          <div class="units"> tons</div>
           <div class="resultname"> CO2 Emissions </div>
         </div>
 
         <!-- Water results -->
-        <div class="col-sm-4 col-md-2" id="Water">  
+        <div class="col-sm-4 col-md-2" id="Water">
           <span class="dot">
             <img class="water" src="logos/water.svg">
           </span>
           <div class="resultval" id="waterval"> 0 </div>
-          <div class="units"> units, Gallons? </div>
-          <div class="resultname"> Water Consumption </div>
+          <div class="units"> m<sup>3</sup> </div>
+          <div class="resultname"> Water Use </div>
         </div>
 
         <!-- Jobs results -->
-        <div class="col-sm-4 col-md-2" id="Jobs">  
+        <div class="col-sm-4 col-md-2" id="Jobs">
           <span class="dot">
             <img class="job" src="logos/job.svg">
           </span>
@@ -119,27 +142,27 @@
         </div>
 
         <!-- Energy results -->
-        <div class="col-sm-4 col-md-2" id="Energy">  
+        <div class="col-sm-4 col-md-2" id="Energy">
           <span class="dot"><img class="energy" src="logos/energy.svg"></span>
           <div class="resultval" id="energyval"> 0 </div>
-          <div class="units"> units? HP? </div>
-          <div class="resultname"> Energy </div>
+          <div class="units"> GWh </div>
+          <div class="resultname"> Building Energy Use </div>
         </div>
-        
+
         <!-- Cost -->
-        <div class="col-sm-4 col-md-2" id="OpEx Cost">  
+        <div class="col-sm-4 col-md-2" id="Cost">
           <span class="dot"><img class="cost" src="logos/cost.svg"></span>
-          <div class="resultval" id="costval"> 0 </div>
-          <div class="units"> dollars </div>
-          <div class="resultname"> Annual OpEx Cost </div>
+          <div class="resultval" id="opexval"> 0 </div>
+          <div class="units"> thousands $ </div>
+          <div class="resultname"> Operational Costs </div>
         </div>
-        
+
         <!-- Food -->
-        <div class="col-sm-4 col-md-2" id="Food">  
+        <div class="col-sm-4 col-md-2" id="Food">
           <span class="dot"><img class="greenhouse" src="logos/greenhouse.svg"></span>
-          <div class="resultval" id="otherval"> 0 </div>
-          <div class="units"> % supplied </div>
-          <div class="resultname"> Food </div>
+          <div class="resultval" id="foodval"> 0 </div>
+          <div class="units"> % </div>
+          <div class="resultname"> Locally Grown Vegetables </div>
         </div>
 
       </div> <!-- end calculations row -->
@@ -148,14 +171,13 @@
 
     <!-- Include vue, leaflet, and our custom javascript-->
     <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js'></script>
     <script src="https://unpkg.com/leaflet@1.2.0/dist/leaflet.js"></script>
-
+    <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-csv/0.8.9/jquery.csv.min.js"></script>
     <script src="res.js"></script>
     <script src="com.js"></script>
     <script src="index.js"></script>
+    <script  src="modal.js"></script>
   </body>
 </html>
-
-
-
-

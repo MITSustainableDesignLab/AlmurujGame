@@ -121,9 +121,6 @@ function process_data(data) {
 var file = "data.csv";
 arraydata = getdatafromfile(file);
 
-//console.log(arraydata);
-console.log(arraydata[0].Use)
-
 
 // populated in process data
 var database = {}; // full data set
@@ -277,6 +274,11 @@ green = document.getElementById("toggleGreen");
 roof = document.getElementById("toggleRoof");
 split = document.getElementById("togglePVFood");
 
+res_button = document.getElementById("resbtn");
+com_button = document.getElementById("combtn");
+all_button = document.getElementById("allbtn");
+none_button = document.getElementById("nonebtn");
+
 // add click event listeners
 hp.addEventListener("click", toggleHP);
 water_el.addEventListener("click", togglewater);
@@ -284,8 +286,13 @@ green.addEventListener("click", togglegreen);
 roof.addEventListener("click", sliderroof);
 split.addEventListener("click", slidersplit);
 
+res_button.addEventListener("click", toggle_res);
+com_button.addEventListener("click", toggle_com);
+all_button.addEventListener("click", toggle_all_buildings);
+none_button.addEventListener("click", toggle_none);
+
 function adjust_buildings(property, val) {
-  var ids = Array.from(current_clicked)
+  var ids = Array.from(current_clicked) // because set object not iterable
   ids.forEach( function(id) {
     building_config[id][property] = val;
   })
@@ -363,9 +370,9 @@ function onEachFeature(feature, layer) {
     });
 }
 
-var all = commercial["features"].concat(residential["features"]);
-var res = residential["features"];
-var com = commercial["features"];
+var res_b = residential["features"];
+var com_b = commercial["features"];
+var all = com_b.concat(res_b);
 
 var buildings = {}
 
@@ -381,28 +388,40 @@ for (var i in all) {
   buildings[all[i].id] = b
   b.addTo(map);
 }
-for (var i in res) {
-  var building = res[i];
-  var b = new L.GeoJSON(building, {
-    onEachFeature: onEachFeature,
-    style: {
-      color: style.getPropertyValue('--res-color'),
-      opacity: 0.7
-    }
-  });
-  buildings[res[i].id] = b
-  b.addTo(map);
+
+function toggle_res() {
+  for (var i in res_b) {
+    id = res_b[i].id;
+    current_clicked.add(id);
+    buildings[id].setStyle({color: style.getPropertyValue('--clicked-color')});
+  }
+  reset_defaults();
 }
 
-for (var i in com) {
-  var building = com[i];
-  var b = new L.GeoJSON(building, {
-    onEachFeature: onEachFeature,
-    style: {
-      color: style.getPropertyValue('--com-color'),
-      opacity: 0.7
-    }
-  });
-  buildings[com[i].id] = b
-  b.addTo(map);
+function toggle_com() {
+  for (var i in com_b) {
+    id = com_b[i].id;
+    current_clicked.add(id);
+    buildings[id].setStyle({color: style.getPropertyValue('--clicked-color')});
+  }
+  reset_defaults();
+}
+
+function toggle_all_buildings() {
+  for (var i in all) {
+    id = all[i].id;
+    current_clicked.add(id);
+    buildings[id].setStyle({color: style.getPropertyValue('--clicked-color')});
+  }
+  reset_defaults();
+}
+
+function toggle_none() {
+  var ids = Array.from(current_clicked) // because set object not iterable
+  console.log(ids)
+  ids.forEach( function(id) {
+    buildings[id].setStyle({color: style.getPropertyValue('--main-color')});
+  })
+  current_clicked.clear();
+  reset_defaults();
 }

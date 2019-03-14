@@ -156,12 +156,12 @@ populate();
 
 function populate() { // populate the bottom row with correct values
   var values = calculate();
-  document.getElementById("capex").innerHTML = numberWithCommas(Math.round(values.capex)); // in millions
+  document.getElementById("capex").innerHTML = numberWithCommas(Math.round(values.capex/1000)); // in millions
   document.getElementById("co2val").innerHTML = numberWithCommas(Math.round(values.co2/1000)); // kg to tons
   document.getElementById("waterval").innerHTML = numberWithCommas(Math.round(values.water/1000)); // liters to m^3
   document.getElementById("jobsval").innerHTML = numberWithCommas(Math.round(values.jobs));
-  document.getElementById("opexval").innerHTML = numberWithCommas(Math.round(values.opex)); // in millions
-  document.getElementById("energyval").innerHTML = numberWithCommas(Math.round(values.energy/1000)); // kWH to gWH
+  document.getElementById("opexval").innerHTML = numberWithCommas(Math.round(values.opex/1000)); // in millions
+  document.getElementById("energyval").innerHTML = numberWithCommas(Math.round(values.energy/1000000)); // kWH to gWH
   document.getElementById("foodval").innerHTML = numberWithCommas(Math.round(values.food));
 }
 
@@ -171,13 +171,13 @@ function numberWithCommas(x) {
 
 function calculate() {
   var current = {
-    capex: calculate_capex(),
-    co2: calculate_co2(),
-    water: calculate_water(),
-    jobs: calculate_jobs(),
-    opex: calculate_opex(),
-    energy: calculate_energy(),
-    food: calculate_food(),
+    capex: calculate_capex(ids),
+    co2: calculate_co2(ids),
+    water: calculate_water(ids),
+    jobs: calculate_jobs(ids),
+    opex: calculate_opex(ids),
+    energy: calculate_energy(ids),
+    food: calculate_food(ids),
   };
   return current;
 };
@@ -185,7 +185,7 @@ function calculate() {
 
 /* TODO: get rid of repeated code here */
 
-function calculate_capex() {
+function calculate_capex(ids) {
   capex = base.capex;
   for (const id of ids) {
     capex += building_config[id].hp * database[id].hp.capex;
@@ -197,7 +197,7 @@ function calculate_capex() {
   return capex;
 };
 
-function calculate_co2() {
+function calculate_co2(ids) {
   co2 = base.co2;
   for (const id of ids) {
     co2 += building_config[id].hp * database[id].hp.co2;
@@ -210,7 +210,7 @@ function calculate_co2() {
 };
 
 
-function calculate_water() {
+function calculate_water(ids) {
   water = base.water;
   for (const id of ids) {
     water += building_config[id].hp * database[id].hp.water;
@@ -222,7 +222,7 @@ function calculate_water() {
 };
 
 
-function calculate_jobs() {
+function calculate_jobs(ids) {
   jobs = base.jobs;
   for (const id of ids) {
     jobs += building_config[id].hp * database[id].hp.jobs;
@@ -235,7 +235,7 @@ function calculate_jobs() {
 };
 
 
-function calculate_opex() {
+function calculate_opex(ids) {
   opex = base.opex
   for (const id of ids) {
     opex += building_config[id].hp * database[id].hp.opex;
@@ -248,7 +248,7 @@ function calculate_opex() {
 }
 
 
-function calculate_energy() {
+function calculate_energy(ids) {
   energy = base.energy
   for (const id of ids) {
     energy += building_config[id].we * database[id].we.energy;
@@ -259,7 +259,7 @@ function calculate_energy() {
   return energy;
 }
 
-function calculate_food() {
+function calculate_food(ids) {
   food = base.food
   for (const id of ids) {
     food += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.food;
@@ -431,3 +431,99 @@ function toggle_none() {
   current_clicked.clear();
   reset_defaults();
 }
+
+/*****************************************************
+ * Add heat maps!
+ *****************************************************/
+
+// get clickable elements
+co2res = document.getElementById("CO2");
+waterres = document.getElementById("Water");
+jobsres = document.getElementById("Jobs");
+energyres = document.getElementById("Energy");
+costres = document.getElementById("Cost");
+foodres = document.getElementById("Food");
+
+// add click event listeners
+co2res.addEventListener("click", co2h());
+waterres.addEventListener("click", waterh());
+jobsres.addEventListener("click", jobsh());
+energyres.addEventListener("click", energyh());
+costres.addEventListener("click", costh());
+foodres.addEventListener("click", foodh());
+
+function resetcolors() {
+  for (var i in all) {
+    id = all[i].id;
+    current_clicked.add(id);
+    buildings[id].setStyle({color: style.getPropertyValue('--main-color')});
+  }
+  var ids = Array.from(current_clicked) // because set object not iterable
+  ids.forEach( function(id) {
+    buildings[id].setStyle({color: style.getPropertyValue('--clicked-color')});
+  })
+}
+
+function heatMapColorforValue(value) {
+  var h = (1.0 - value) * 240;
+  return "hsl(" + h + ", 100%, 50%)";
+}
+
+// subtract out min and divide by max
+function normalize(calc_func) {
+  var numbers = {};
+  for (var i in all) {
+    id = all[i].id;
+    numbers.id = calc_func([id])
+  }
+
+  //get min and subtract out min
+  min_val = Math.min.apply(null, Object.values(numbers));
+  for (var id in numbers) {
+    numbers[id] -= min_val;
+  }
+
+  //get max and divide
+  max_val = Math.max.apply(null, Object.values(numbers));
+  for (var id in numbers) {
+    numbers[id] /= min_val;
+  }
+  return numbers;
+}
+
+function heat(calc_func) {
+  normalized = normalize(calc_func);
+  colors = {};
+  for (var id in normalized) {
+    _color = heatMapColorforValue(normalized[id]);
+    buildings[id].setStyle({color: _color});
+  }
+  
+}
+
+
+function co2h() {
+  heat(calculate_co2)
+}
+
+function waterh() {
+  heat(calculate_water)
+}
+
+function jobsh() {
+  heat(calculate_jobs)
+}
+
+function opexh() {
+  heat(calculate_opex)
+}
+
+function energyh() {
+  heat(calculate_energy)
+}
+
+function foodh() {
+  heat(calculate_food)
+}
+
+

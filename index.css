@@ -1,7 +1,7 @@
 :root {
-  --main-color: #53AE96;
-  --subtitle-color: #308db2;
-  --clicked-color: #800000;
+  --main-color: #53ab92;
+  --light-color: #58bd9f;
+  --clicked-color: #4487b2;
 }
 
 html, body {
@@ -19,7 +19,7 @@ h2 { /* title */
 }
 
 h3 {  /* subtitle */
-  color: var(--main-color);
+  color: var(--light-color);
   text-align: center;
   font-size: 110%;
   font-style: italic;
@@ -27,7 +27,7 @@ h3 {  /* subtitle */
 
 /************* Buttons ********************/
 .btn {
-  background-color: var(--main-color);
+  background-color: var(--light-color);
   border: none;
   color: white;
   padding: 8px 17px;

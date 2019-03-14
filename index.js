@@ -121,6 +121,10 @@ function process_data(data) {
 var file = "data.csv";
 arraydata = getdatafromfile(file);
 
+//console.log(arraydata);
+console.log(arraydata[0].Use)
+
+
 // populated in process data
 var database = {}; // full data set
 var building_config = {}; // current building configurations id: config
@@ -261,7 +265,7 @@ function calculate_food() {
 
 
 /**************************************************
- * Modifications when clicks made as needed!
+ * Modifications as needed!
  **************************************************/
 
 var current_clicked = new Set();
@@ -281,7 +285,7 @@ roof.addEventListener("click", sliderroof);
 split.addEventListener("click", slidersplit);
 
 function adjust_buildings(property, val) {
-  var ids = Array.from(current_clicked) // because set obj not iterable, use arr
+  var ids = Array.from(current_clicked)
   ids.forEach( function(id) {
     building_config[id][property] = val;
   })
@@ -360,6 +364,8 @@ function onEachFeature(feature, layer) {
 }
 
 var all = commercial["features"].concat(residential["features"]);
+var res = residential["features"];
+var com = commercial["features"];
 
 var buildings = {}
 
@@ -373,5 +379,30 @@ for (var i in all) {
     }
   });
   buildings[all[i].id] = b
+  b.addTo(map);
+}
+for (var i in res) {
+  var building = res[i];
+  var b = new L.GeoJSON(building, {
+    onEachFeature: onEachFeature,
+    style: {
+      color: style.getPropertyValue('--res-color'),
+      opacity: 0.7
+    }
+  });
+  buildings[res[i].id] = b
+  b.addTo(map);
+}
+
+for (var i in com) {
+  var building = com[i];
+  var b = new L.GeoJSON(building, {
+    onEachFeature: onEachFeature,
+    style: {
+      color: style.getPropertyValue('--com-color'),
+      opacity: 0.7
+    }
+  });
+  buildings[com[i].id] = b
   b.addTo(map);
 }

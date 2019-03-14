@@ -2,6 +2,8 @@
   --main-color: #53AE96;
   --subtitle-color: #308db2;
   --clicked-color: #800000;
+  --res-color: #FF99FF;
+  --com-color: #FFCC66;
 }
 
 html, body {
@@ -208,6 +210,7 @@ input:checked + .toggle:before {
 .dot {
   height: 75px;
   width: 75px;
+  border-color: #fff;
   background-color: #d9d9d9;
   border-radius: 50%;
   display: inline-block;

@@ -40,49 +40,57 @@ function populate_building_config(d) {
  * Data loading
  ********************************************/
 
+function parseData(d, val) {
+  if (d[val]) {
+    return parseFloat(d[val]);
+  }
+  // log an error here
+  console.log('val not found');
+  console.log(val)
+}
 
 function populate_data(d) {
   var building = {
     use: d.Use,
     name: d.BuildingName,
     hp: {
-      capex: parseFloat(d.InvestmentCostHP),
-      co2: parseFloat(d.CO2EmissionsHighPerformance),
-      water: parseFloat(d.WaterHighPerformance),
-      jobs: parseFloat(d.JobsHighPerformance),
-      opex: parseFloat(d.OpCostHP),
+      capex: parseData(d, 'InvestmentCostHP'),
+      co2: parseData(d, 'CO2EmissionsHighPerformance'),
+      water: parseData(d, 'WaterHighPerformance'),
+      jobs: parseData(d, 'JobsHighPerformance'),
+      opex: parseData(d, 'OpCostHP'),
     },
     we: {
-      capex: parseFloat(d.InvestmentCostWaterEfficient),
-      co2: parseFloat(d.CO2EmissionsWaterEfficient),
-      water: parseFloat(d.WaterWaterEfficient),
-      jobs: parseFloat(d.JobsWaterEfficient),
-      opex: parseFloat(d.OpCostWaterEfficient),
-      energy: parseFloat(d.EnergyWaterEfficient),
+      capex: parseData(d, 'InvestmentCostWaterEfficient'),
+      co2: parseData(d, 'CO2EmissionsWaterEfficient'),
+      water: parseData(d, 'WaterWaterEfficient'),
+      jobs: parseData(d, 'JobsWaterEfficient'),
+      opex: parseData(d, 'OpCostWaterEfficient'),
+      energy: parseData(d, 'EnergyWaterEfficient'),
     },
     landscaping: {
-      capex: parseFloat(d.InvestmentCostGreenery),
-      co2: parseFloat(d.CO2EmissionsGreenery),
-      water: parseFloat(d.WaterGreenery),
-      jobs: parseFloat(d.JobsGreenery),
-      opex: parseFloat(d.OpCostGreenery),
-      energy: parseFloat(d.EnergyGreenery),
+      capex: parseData(d, 'InvestmentCostGreenery'),
+      co2: parseData(d, 'CO2EmissionsGreenery'),
+      water: parseData(d, 'WaterGreenery'),
+      jobs: parseData(d, 'JobsGreenery'),
+      opex: parseData(d, 'OpCostGreenery'),
+      energy: parseData(d, 'EnergyGreenery'),
     },
     pv: {
-      capex: parseFloat(d.InvestmentCostPVPanels),
-      co2: parseFloat(d.CO2EmissionsPVPanels),
-      jobs: parseFloat(d.JobsPVPanels),
-      opex: parseFloat(d.OpCostPVPanels),
-      energy: parseFloat(d.EnergyPVPanels),
+      capex: parseData(d, 'InvestmentCostPVPanels'),
+      co2: parseData(d, 'CO2EmissionsPVPanels'),
+      jobs: parseData(d, 'JobsPVPanels'),
+      opex: parseData(d, 'OpCostPVPanels'),
+      energy: parseData(d, 'EnergyPVPanels'),
     },
     greenhouse: {
-      capex: parseFloat(d.InvestmentCostGreenhouse),
-      co2: parseFloat(d.CO2EmissionsGreenhouse),
-      water: parseFloat(d.WaterGreenhouse100),
-      jobs: parseFloat(d.JobsGreenhouse),
-      opex: parseFloat(d.OpCostGreenhouse),
-      energy: parseFloat(d.EnergyGreenhouse),
-      food: parseFloat(d.FoodPercentageGreenhouse100),
+      capex: parseData(d, 'InvestmentCostGreenhouse'),
+      co2: parseData(d, 'CO2EmissionsGreenhouse'),
+      water: parseData(d, 'WaterGreenhouse100'),
+      jobs: parseData(d, 'JobsGreenhouse'),
+      opex: parseData(d, 'OpCostGreenhouse'),
+      energy: parseData(d, 'EnergyGreenhouse'),
+      food: parseData(d, 'FoodPercentageGreenhouse100'),
     },
   };
   return building;
@@ -148,7 +156,6 @@ populate();
 
 function populate() { // populate the bottom row with correct values
   var values = calculate();
-  console.log(values)
   document.getElementById("capex").innerHTML = numberWithCommas(Math.round(values.capex)); // in millions
   document.getElementById("co2val").innerHTML = numberWithCommas(Math.round(values.co2/1000)); // kg to tons
   document.getElementById("waterval").innerHTML = numberWithCommas(Math.round(values.water/1000)); // liters to m^3
@@ -418,7 +425,6 @@ function toggle_all_buildings() {
 
 function toggle_none() {
   var ids = Array.from(current_clicked) // because set object not iterable
-  console.log(ids)
   ids.forEach( function(id) {
     buildings[id].setStyle({color: style.getPropertyValue('--main-color')});
   })

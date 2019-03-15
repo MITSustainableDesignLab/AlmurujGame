@@ -269,6 +269,7 @@ function calculate_energy(ids, include_base) {
     energy = base.energy;
   }
   for (const id of ids) {
+    energy += building_config[id].hp * database[id].hp.energy;
     energy += building_config[id].we * database[id].we.energy;
     energy += building_config[id].landscaping * database[id].landscaping.energy;
     energy += building_config[id].roof_usage * building_config[id].roof_split * database[id].pv.energy;

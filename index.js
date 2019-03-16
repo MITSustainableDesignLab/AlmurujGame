@@ -262,7 +262,6 @@ function calculate_jobs(ids, include_base) {
     jobs += building_config[id].roof_usage * building_config[id].roof_split * database[id].pv.jobs;
     jobs += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.jobs;
   };
-  console.log(jobs);
   return jobs;
 };
 
@@ -409,7 +408,6 @@ map.fitBounds(bounds);
 
 function onClick(e) {
   var id = e.target.feature.id
-
   if (current_clicked.has(id)) {
     current_clicked.delete(id);
     buildings[id].setStyle({color: style.getPropertyValue('--main-color')});
@@ -510,7 +508,6 @@ foodres.addEventListener("click", foodh);
 clearcolor.addEventListener("click", resetcolors);
 
 function resetcolors() {
-  console.log(current_clicked);
   for (var i in all) {
     id = all[i].id;
     buildings[id].setStyle({color: style.getPropertyValue('--main-color')});
@@ -547,6 +544,9 @@ function normalize(calc_func) {
     var calculated = calc_func(ls, 0) || 0;
     numbers[all[i].id] = +calculated;
   }
+
+  numbers['316f1a4c-d98a-430f-b4ec-7f5a0d5e3b21'] = 0
+
   //get min and subtract out min
   min_val = Math.min.apply(null, Object.values(numbers));
   for (var id in numbers) {

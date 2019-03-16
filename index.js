@@ -190,7 +190,6 @@ function calculate_capex(ids, include_base) {
   if (include_base) {
     capex = base.capex;
   }
-  console.log(capex)
   for (const id of ids) {
     capex += building_config[id].hp * database[id].hp.capex;
     capex += building_config[id].we * database[id].we.capex;
@@ -206,7 +205,6 @@ function calculate_co2(ids, include_base) {
   if (include_base) {
     co2 = base.co2;
   }
-  console.log(co2)
   for (const id of ids) {
     co2 += building_config[id].hp * database[id].hp.co2;
     co2 += building_config[id].we * database[id].we.co2;

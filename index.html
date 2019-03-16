@@ -27,10 +27,20 @@
         <!-- map is displayed here-->
         <div class="col-md-8">
           <div class="container">
-            <button id="resbtn" class="btn">Residential</button>
-            <button id="combtn" class="btn">Commercial</button>
-            <button id="allbtn" class="btn">All</button>
-            <button id="nonebtn" class="btn">None</button>
+            
+            <div class="row">
+              <button id="resbtn" class="btn">Residential</button>
+              <button id="combtn" class="btn">Commercial</button>
+              <!-- <button id="allbtn" class="btn">All</button> -->
+              <button id="nonebtn" class="btn">None</button>
+              <div id="gradient"> 
+                <img src="gradient.png" id="grad" alt="Gradient From Orange to Red">
+                <p id="gradtext">Yellow to Red: Low to High Contribution</p>
+              </div>
+              <button id="clearcolor" class="btn">Reset Colors</button>
+              
+            </div>
+          
           </div>
           <div id="map" class="map">
           </div>

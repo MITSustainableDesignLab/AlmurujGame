@@ -53,6 +53,15 @@ function populate_data(d) {
   var building = {
     use: d.Use,
     name: d.BuildingName,
+    base: {
+      capex: 0,
+      co2: parseData(d, 'CO2EmissionsBase'),
+      water: parseData(d, 'WaterBase'),
+      jobs: parseData(d, 'JobsBase'),
+      opex: parseData(d, 'OpCostBase'),
+      energy: parseData(d, 'EnergyBase'),
+      food: 0,
+    },
     hp: {
       capex: parseData(d, 'InvestmentCostHP'),
       co2: parseData(d, 'CO2EmissionsHighPerformance'),
@@ -191,6 +200,9 @@ function calculate_capex(ids, include_base) {
     capex = base.capex;
   }
   for (const id of ids) {
+    if (!(include_base)) {
+      capex += database[id].base.capex;
+    }
     capex += building_config[id].hp * database[id].hp.capex;
     capex += building_config[id].we * database[id].we.capex;
     capex += building_config[id].landscaping * database[id].landscaping.capex;
@@ -206,6 +218,9 @@ function calculate_co2(ids, include_base) {
     co2 = base.co2;
   }
   for (const id of ids) {
+    if (!(include_base)) {
+      co2 += database[id].base.co2;
+    }
     co2 += building_config[id].hp * database[id].hp.co2;
     co2 += building_config[id].we * database[id].we.co2;
     co2 += building_config[id].landscaping * database[id].landscaping.co2;
@@ -221,6 +236,9 @@ function calculate_water(ids, include_base) {
     water = base.water;
   }
   for (const id of ids) {
+    if (!(include_base)) {
+      water += database[id].base.water;
+    }
     water += building_config[id].hp * database[id].hp.water;
     water += building_config[id].we * database[id].we.water;
     water += building_config[id].landscaping * database[id].landscaping.water;
@@ -235,12 +253,16 @@ function calculate_jobs(ids, include_base) {
     jobs = base.jobs;
   }
   for (const id of ids) {
+    if (!(include_base)) {
+      jobs += database[id].base.jobs;
+    }
     jobs += building_config[id].hp * database[id].hp.jobs;
     jobs += building_config[id].we * database[id].we.jobs;
     jobs += building_config[id].landscaping * database[id].landscaping.jobs;
     jobs += building_config[id].roof_usage * building_config[id].roof_split * database[id].pv.jobs;
     jobs += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.jobs;
   };
+  console.log(jobs);
   return jobs;
 };
 
@@ -251,6 +273,9 @@ function calculate_opex(ids, include_base) {
     opex = base.opex;
   }
   for (const id of ids) {
+    if (!(include_base)) {
+      opex += database[id].base.opex;
+    }
     opex += building_config[id].hp * database[id].hp.opex;
     opex += building_config[id].we * database[id].we.opex;
     opex += building_config[id].landscaping * database[id].landscaping.opex;
@@ -267,6 +292,9 @@ function calculate_energy(ids, include_base) {
     energy = base.energy;
   }
   for (const id of ids) {
+    if (!(include_base)) {
+      energy += database[id].base.energy;
+    }
     energy += building_config[id].hp * database[id].hp.energy;
     energy += building_config[id].we * database[id].we.energy;
     energy += building_config[id].landscaping * database[id].landscaping.energy;
@@ -282,6 +310,9 @@ function calculate_food(ids, include_base) {
     food = base.food;
   }
   for (const id of ids) {
+    if (!(include_base)) {
+      food += database[id].base.food;
+    }
     food += building_config[id].roof_usage * (1-building_config[id].roof_split) * database[id].greenhouse.food;
   };
   return food;
@@ -303,7 +334,7 @@ split = document.getElementById("togglePVFood");
 
 res_button = document.getElementById("resbtn");
 com_button = document.getElementById("combtn");
-all_button = document.getElementById("allbtn");
+//all_button = document.getElementById("allbtn");
 none_button = document.getElementById("nonebtn");
 
 // add click event listeners
@@ -315,7 +346,7 @@ split.addEventListener("click", slidersplit);
 
 res_button.addEventListener("click", toggle_res);
 com_button.addEventListener("click", toggle_com);
-all_button.addEventListener("click", toggle_all_buildings);
+//all_button.addEventListener("click", toggle_all_buildings);
 none_button.addEventListener("click", toggle_none);
 
 function adjust_buildings(property, val) {
@@ -417,6 +448,7 @@ for (var i in all) {
 }
 
 function toggle_res() {
+  resetcolors();
   for (var i in res_b) {
     id = res_b[i].id;
     current_clicked.add(id);
@@ -426,6 +458,7 @@ function toggle_res() {
 }
 
 function toggle_com() {
+  resetcolors();
   for (var i in com_b) {
     id = com_b[i].id;
     current_clicked.add(id);
@@ -435,6 +468,7 @@ function toggle_com() {
 }
 
 function toggle_all_buildings() {
+  resetcolors();
   for (var i in all) {
     id = all[i].id;
     current_clicked.add(id);
@@ -444,6 +478,7 @@ function toggle_all_buildings() {
 }
 
 function toggle_none() {
+  resetcolors();
   var ids = Array.from(current_clicked) // because set object not iterable
   ids.forEach( function(id) {
     buildings[id].setStyle({color: style.getPropertyValue('--main-color')});
@@ -463,6 +498,7 @@ jobsres = document.getElementById("Jobs");
 energyres = document.getElementById("Energy");
 costres = document.getElementById("Cost");
 foodres = document.getElementById("Food");
+clearcolor = document.getElementById("clearcolor");
 
 // add click event listeners
 co2res.addEventListener("click", co2h);
@@ -471,15 +507,16 @@ jobsres.addEventListener("click", jobsh);
 energyres.addEventListener("click", energyh);
 costres.addEventListener("click", opexh);
 foodres.addEventListener("click", foodh);
+clearcolor.addEventListener("click", resetcolors);
 
 function resetcolors() {
+  console.log(current_clicked);
   for (var i in all) {
     id = all[i].id;
-    current_clicked.add(id);
     buildings[id].setStyle({color: style.getPropertyValue('--main-color')});
   }
-  var ids = Array.from(current_clicked) // because set object not iterable
-  ids.forEach( function(id) {
+  var curr = Array.from(current_clicked) // because set object not iterable
+  curr.forEach( function(id) {
     buildings[id].setStyle({color: style.getPropertyValue('--clicked-color')});
   })
 }
@@ -490,23 +527,15 @@ function componentToHex(c) {
 }
 
 function rgbToHex(r, g, b) {
-    console.log(r)
-    console.log(g)
-    console.log(b)
     return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
 }
 
-/*map from yellow to red*/
+/*map from orange (244, 190, 66) to red (244, 40, 66)*/
 function heatMapColorforValue(value) {
   var a=(1-value);
-  console.log('a');
-  console.log(a);
-  var Y=Math.floor(255*a);
-  console.log(Y);
-  r=255;g=Y;b=0;
+  var Y=Math.floor(200*a);
+  r=244;g=Y;b=66;
   var str = rgbToHex(r, g, b);
-  console.log('rgb')
-  console.log(str)
   return str;
 }
 
@@ -514,11 +543,10 @@ function heatMapColorforValue(value) {
 function normalize(calc_func) {
   var numbers = {};
   for (var i in all) {
-    numbers[id] = calc_func([all[i].id], 0);
+    var ls = [all[i].id]; 
+    var calculated = calc_func(ls, 0) || 0;
+    numbers[all[i].id] = +calculated;
   }
-  console.log('numbers original')
-  console.log(numbers)
-
   //get min and subtract out min
   min_val = Math.min.apply(null, Object.values(numbers));
   for (var id in numbers) {
@@ -527,19 +555,17 @@ function normalize(calc_func) {
 
   //get max and divide
   max_val = Math.max.apply(null, Object.values(numbers));
-  for (var id in numbers) {
-    numbers[id] /= max_val;
+  if (max_val > 0) {
+    for (var id in numbers) {
+      numbers[id] /= max_val;
+    }
   }
-  console.log('numbers')
-  console.log(numbers)
   return numbers;
 }
 
 function heat(calc_func) {
   normalized = normalize(calc_func);
   for (var id in normalized) {
-    console.log('normalized')
-    console.log(normalized[id])
     _color = heatMapColorforValue(normalized[id]);
     buildings[id].setStyle({color: _color});
   }

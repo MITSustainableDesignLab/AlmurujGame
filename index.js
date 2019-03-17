@@ -545,7 +545,6 @@ function normalize(calc_func) {
     numbers[all[i].id] = +calculated;
   }
 
-  numbers['316f1a4c-d98a-430f-b4ec-7f5a0d5e3b21'] = 0
 
   //get min and subtract out min
   min_val = Math.min.apply(null, Object.values(numbers));
@@ -560,6 +559,7 @@ function normalize(calc_func) {
       numbers[id] /= max_val;
     }
   }
+  numbers['316f1a4c-d98a-430f-b4ec-7f5a0d5e3b21'] = 1;
   return numbers;
 }
 

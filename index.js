@@ -545,12 +545,18 @@ function normalize(calc_func) {
     numbers[all[i].id] = +calculated;
   }
 
+  var not_zero = false;
+  if (numbers['316f1a4c-d98a-430f-b4ec-7f5a0d5e3b21'] > 0) {
+    not_zero = true;
+  };
+
 
   //get min and subtract out min
   min_val = Math.min.apply(null, Object.values(numbers));
   for (var id in numbers) {
     numbers[id] -= min_val;
   }
+  numbers['316f1a4c-d98a-430f-b4ec-7f5a0d5e3b21'] = 0;
 
   //get max and divide
   max_val = Math.max.apply(null, Object.values(numbers));
@@ -559,7 +565,10 @@ function normalize(calc_func) {
       numbers[id] /= max_val;
     }
   }
-  numbers['316f1a4c-d98a-430f-b4ec-7f5a0d5e3b21'] = 1;
+
+  if (not_zero) {
+    numbers['316f1a4c-d98a-430f-b4ec-7f5a0d5e3b21'] = 1;
+  }
   return numbers;
 }
 

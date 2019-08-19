@@ -1,0 +1,29 @@
+{
+  "dependencies": {
+    "npm": "^6.8.0",
+    "vue": "^2.6.7",
+    "vue2-leaflet": "^1.2.3"
+  },
+  "name": "Footprint_Project",
+  "description": "",
+  "version": "1.0.0",
+  "main": "index.js",
+  "bin": {
+    "Footprint_Project": "jquery-2.1.1.min.js"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chloeblazey/footprint-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chloeblazey/footprint-project/issues"
+  },
+  "homepage": "https://github.com/chloeblazey/footprint-project#readme"
+}
